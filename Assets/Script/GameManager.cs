@@ -1,150 +1,101 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourSingleton<GameManager>
 {
-    public static GameManager Instance { get; set; }
+    #region Resource fields
 
-    [Header("TEXT FIELDS")]
-    public Text spheresText_1;
-    public Text resourcesText;
+    public float WoodCount { get; set; }
+    public float StoneCount { get; set; }
+    public float PowerCount { get; set; }
+    public float WaterCount { get; set; }
+    public float CrystalCount { get; set; }
 
-    public TMP_Text spheresText;
-    public TMP_Text woodText;
-    public TMP_Text stoneText;
-    public TMP_Text waterText;
-    public TMP_Text energyText;
+    #endregion
 
-    [Header("RESOURCES")]
-    public float WoodCount;
-    public float StoneCount;
-    public float EnergyCount;
-    public float WaterCount;
-    public float CrystalCount;
+    #region Human stats fields
+
+    public float Food { get; set; }
+    public float Health { get; set; }
+    public float Happiness { get; set; }
+    public float Economy { get; set; }
+
+    #endregion
+
+    [Header("Resource Island Controllers")]
+    public List<IslandController> islandControllers;
+
+    [Header("Special Island Controllers")]
+    public IslandController vacationIslandController;    
+    public IslandController mergeIslandController;
     
-    [Header("PEOPLE STATISTICS")]
-    public float Food;
-    public float Health;
-    public float Happinnes;
-    public float Ecomony;
-
-    private List<IslandController> _islandControllers;
-    private IslandController _vacationIslandController;    
-    private IslandController _mergeIslandController;
-
+    [Header("FX Components")]
     public GameObject deathParticles;
+    
     public bool PopupMenuOpened { get; set; }
-
-    private void Awake()
-    {
-        if (!Instance)
-            Instance = this;
-    }
 
     private void Start()
     {
-        _islandControllers = FindObjectsOfType<IslandController>().ToList();
-        _vacationIslandController = GameObject.FindGameObjectWithTag("VacationIsland").GetComponent<IslandController>();
-        _mergeIslandController = GameObject.FindGameObjectWithTag("MergeIsland").GetComponent<IslandController>();
-        
-        TurnOffAllOutline();
+        SetActiveIslandsOutline(false);
 
         CrystalCount = 500;
         WoodCount = 100;
         StoneCount = 100;
         WaterCount = 100;
-        EnergyCount = 100;
-        
-        spheresText.text = "" + (int)CrystalCount;
-        woodText.text = "" + (int)WoodCount;
-        stoneText.text = "" + (int)StoneCount;
-        waterText.text = "" + (int)WaterCount;
-        energyText.text = "" + (int)EnergyCount;
+        CrystalCount = 100;
     }
 
-    public void TurnOffAllOutline()
+    public void SetActiveIslandsOutline(bool active)
     {
-        foreach (var islandController in _islandControllers)
+        foreach (var islandController in islandControllers)
         {
-            islandController.TurnOutline(false);
+            islandController.SetActiveOutline(active);
         }
+
+        SetActiveVacationIslandOutline(active);
+        SetActiveMergeIslandOutline(active);
     }
 
-    public void TurnVacationIslandOutline()
+    public void SetActiveVacationIslandOutline(bool active)
     {
-        _vacationIslandController.TurnOutline(true);
+        vacationIslandController.SetActiveOutline(active);
     }
     
-    public void TurnMergeIslandOutline()
+    public void SetActiveMergeIslandOutline(bool active)
     {
-        _mergeIslandController.TurnOutline(true);
+        mergeIslandController.SetActiveOutline(active);
     }
 
-    public bool BuyMinion(float cost)
+    public void Harvest(ResourceType resourceType, float power)
     {
-        if (CrystalCount - cost < 0)
+        switch (resourceType)
         {
-            return false;
-        }
-
-        CrystalCount -= cost;
-        spheresText.text = "" + (int)CrystalCount;
-        woodText.text = "" + (int)WoodCount;
-        stoneText.text = "" + (int)StoneCount;
-        waterText.text = "" + (int)WaterCount;
-        energyText.text = "" + (int)EnergyCount;
-        return true;
-    }
-
-    public void Harvest(MinionDescriptor.Type type, float power)
-    {
-        switch (type)
-        {
-            case MinionDescriptor.Type.Forester:
+            case ResourceType.Wood:
                 WoodCount += power;
+                InterfaceManager.Instance.UpdateWoodTextField();
                 break;
-            case MinionDescriptor.Type.Stoner:
+            
+            case ResourceType.Stone:
                 StoneCount += power;
+                InterfaceManager.Instance.UpdateStoneTextField();
                 break;
-            case MinionDescriptor.Type.Waterman:
+            
+            case ResourceType.Water:
                 WaterCount += power;
+                InterfaceManager.Instance.UpdateWaterTextField();
                 break;
-            case MinionDescriptor.Type.Energyman:
-                EnergyCount += power;
-                break;
-            case MinionDescriptor.Type.Crystalman:
+            
+            case ResourceType.Power:
                 CrystalCount += power;
+                InterfaceManager.Instance.UpdatePowerTextField();
+                break;
+            
+            case ResourceType.Shards:
+                CrystalCount += power;
+                InterfaceManager.Instance.UpdateCrystalTextField();
                 break;
         }
-
-        spheresText.text = "" + (int)CrystalCount;
-        woodText.text = "" + (int)WoodCount;
-        stoneText.text = "" + (int)StoneCount;
-        waterText.text = "" + (int)WaterCount;
-        energyText.text = "" + (int)EnergyCount;
-    }
-
-    private void Update()
-    {
-        spheresText.text = "" + (int)CrystalCount;
-        woodText.text = "" + (int)WoodCount;
-        stoneText.text = "" + (int)StoneCount;
-        waterText.text = "" + (int)WaterCount;
-        energyText.text = "" + (int)EnergyCount;
-
-        if (CrystalCount < 0) CrystalCount = 0;
-        if (WoodCount < 0) WoodCount = 0;
-        if (StoneCount < 0) StoneCount = 0;
-        if (WaterCount < 0) WaterCount = 0;
-        if (EnergyCount < 0) EnergyCount = 0;
-    }
-
-    public void DisableButton(Button button)
-    {
-        
     }
 }

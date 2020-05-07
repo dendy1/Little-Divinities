@@ -116,18 +116,18 @@ public class SituationsController : MonoBehaviour
         
         if (id == 1)
         {
-            if (gm.EnergyCount >= 20 && gm.WoodCount >= 20)
+            if (gm.PowerCount >= 20 && gm.WoodCount >= 20)
             {
-                gm.EnergyCount -= 20;
+                gm.PowerCount -= 20;
                 gm.WoodCount -= 20;
             }
         }
         
         if (id == 2)
         {
-            if (gm.EnergyCount >= 30)
+            if (gm.PowerCount >= 30)
             {
-                gm.EnergyCount -= 30;
+                gm.PowerCount -= 30;
             }
         }
         
@@ -169,9 +169,9 @@ public class SituationsController : MonoBehaviour
         
         if (id == 1)
         {
-            if (gm.EnergyCount >= 30 && gm.StoneCount >= 20)
+            if (gm.PowerCount >= 30 && gm.StoneCount >= 20)
             {
-                gm.EnergyCount -= 30;
+                gm.PowerCount -= 30;
                 gm.StoneCount -= 20;
             }
         }
@@ -194,18 +194,18 @@ public class SituationsController : MonoBehaviour
         
         if (id == 4)
         {
-            if (gm.WaterCount >= 10 && gm.EnergyCount >= 30)
+            if (gm.WaterCount >= 10 && gm.PowerCount >= 30)
             {
                 gm.WaterCount -= 10;
-                gm.EnergyCount -= 30;
+                gm.PowerCount -= 30;
             }
         }
         
         if (id == 5)
         {
-            if (gm.EnergyCount >= 40)
+            if (gm.PowerCount >= 40)
             {
-                gm.EnergyCount -= 40;
+                gm.PowerCount -= 40;
             }
         }
     }
@@ -440,7 +440,7 @@ public class SituationsController : MonoBehaviour
     {
         gm.WoodCount -= 10;
         gm.StoneCount -= 10;
-        gm.EnergyCount -= 10;
+        gm.PowerCount -= 10;
         gm.WaterCount -= 10;
         
         timerSituation = Random.Range(5, 9);
