@@ -1,5 +1,98 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &231439160
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 231439161}
+  - component: {fileID: 231439164}
+  - component: {fileID: 231439163}
+  - component: {fileID: 231439162}
+  m_Layer: 0
+  m_Name: Plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &231439161
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231439160}
+  m_LocalRotation: {x: 0, y: 0.14435618, z: 0, w: 0.98952585}
+  m_LocalPosition: {x: 0, y: 0.346, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children: []
+  m_Father: {fileID: 4404938935774107597}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 16.6, z: 0}
+--- !u!33 &231439164
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231439160}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &231439163
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231439160}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!64 &231439162
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231439160}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &827014469582104030
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,11 +103,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4404938935774107597}
   - component: {fileID: 8672745759461635333}
-  - component: {fileID: 8672745759461635330}
-  - component: {fileID: 827014469582104017}
   - component: {fileID: 827014469582104016}
+  - component: {fileID: 412830243}
+  - component: {fileID: 412830244}
+  - component: {fileID: 827014469582104017}
   m_Layer: 0
-  m_Name: Merge Island
+  m_Name: Merge Island Prefab
   m_TagString: MergeIsland
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,6 +127,7 @@ Transform:
   m_Children:
   - {fileID: 8672745759345689161}
   - {fileID: 8672745757662629906}
+  - {fileID: 231439161}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 224.35, z: 0}
@@ -49,42 +144,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.5, y: 1, z: 4.13}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8672745759461635330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 827014469582104030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1914bb2cb22b554e8becdd2dd6347c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  not_icon: 1
-  iconRes: {fileID: 0}
-  dobicha: 0
-  catastropheList: []
-  rainObject: {fileID: 0}
-  fireObject: {fileID: 0}
-  stormObject: {fileID: 0}
-  maxResources: 0
-  maxMinions: 10
-  rainUpgrade: 0
-  fireUpgrade: 0
-  stormUpgrade: 0
---- !u!114 &827014469582104017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 827014469582104030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc58f7e4c420c0d4f87ee9e96c751539, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &827014469582104016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,6 +163,68 @@ MonoBehaviour:
   resourcesMaxIncreaseValue: 0
   minionsUpdateCostIncreaseValue: 0
   resourcesUpdateCostIncreaseValue: 0
+--- !u!114 &412830243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827014469582104030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 543e857adc16aef45bbd466c6465d958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  withoutIcon: 1
+  resourceImageGameObject: {fileID: 0}
+  catastropheList: []
+  rainObject: {fileID: 0}
+  fireObject: {fileID: 0}
+  stormObject: {fileID: 0}
+  maxResources: 0
+  maxMinions: 2
+  rainUpgrade: 0
+  fireUpgrade: 0
+  stormUpgrade: 0
+  catastropheEnabled: 0
+--- !u!114 &412830244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827014469582104030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25c655db5d06ee844831b6234cc9dbd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundPlane: {fileID: 231439161}
+  preview: 1
+  innerBorders:
+    left: 1.58
+    top: 2.14
+    right: 2.65
+    bottom: 1.43
+  externalBorders:
+    left: 2.24
+    top: 2.14
+    right: 3.25
+    bottom: 2.44
+  minionPrefab: {fileID: 0}
+  isEnabled: 0
+--- !u!114 &827014469582104017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827014469582104030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc58f7e4c420c0d4f87ee9e96c751539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3839494724860240005
 GameObject:
   m_ObjectHideFlags: 0

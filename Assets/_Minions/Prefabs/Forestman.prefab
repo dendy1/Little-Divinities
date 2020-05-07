@@ -319,6 +319,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2899094524750592993}
   - component: {fileID: 6878240983708160679}
+  - component: {fileID: 1038359019084592819}
   m_Layer: 0
   m_Name: "\u041A\u0443\u0431"
   m_TagString: Untagged
@@ -425,6 +426,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0009549903, y: -0.0017511006, z: 0.023289142}
     m_Extent: {x: 0.011739895, y: 0.012832047, z: 0.023645902}
   m_DirtyAABB: 0
+--- !u!114 &1038359019084592819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2815853046326708553}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!1 &2927387760615998885
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,6 +860,7 @@ GameObject:
   - component: {fileID: 3237302489305444215}
   - component: {fileID: 546079896012055014}
   - component: {fileID: 7083932072815488558}
+  - component: {fileID: 4816263307030510907}
   - component: {fileID: 96602384832743850}
   m_Layer: 0
   m_Name: Forestman
@@ -897,9 +915,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4cb016dba972774c8f7287da4b5ac4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
+  hp: 200
   harvestRate: 5
-  fatigueRate: 10
+  fatigueRate: 5
   resourceTypeProduction: 0
   cost: 20
   iconSprite: {fileID: 6773372133307898838, guid: 53defdd32e4d3ab4883abca6d45ab351,
@@ -919,6 +937,8 @@ MonoBehaviour:
   currentHp: 0
   currentHarvestRate: 0
   currentFatigueRate: 0
+  MainIslandController: {fileID: 0}
+  CurrentIslandController: {fileID: 0}
   dead:
     m_PersistentCalls:
       m_Calls: []
@@ -952,6 +972,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08dc19c5ad0b66649a8f03951de41a34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4816263307030510907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4800134184432414006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c464eca5f2ab4634dbadf643ec302f64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &96602384832743850
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -960,7 +992,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4800134184432414006}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.74, y: 4.77, z: 2.17}

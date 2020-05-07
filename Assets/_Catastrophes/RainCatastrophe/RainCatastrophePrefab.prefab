@@ -655,8 +655,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8530289983536135698}
+  - component: {fileID: 5411410074601865957}
   m_Layer: 0
-  m_Name: RainCatastrophe
+  m_Name: RainCatastrophePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -681,6 +682,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5411410074601865957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8530289983536135697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be6bcce8573bc0741a0b00b6a9d5b47c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects:
+  - {fileID: 11400000, guid: 145d60481242a9f4d9c4084224e6abdb, type: 2}
+  duration: 10
 --- !u!1 &8971193011860756060
 GameObject:
   m_ObjectHideFlags: 0

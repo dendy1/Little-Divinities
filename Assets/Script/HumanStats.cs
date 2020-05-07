@@ -6,27 +6,60 @@ using UnityEngine.UI;
 
 public class HumanStats : MonoBehaviour
 {
-    public int eat;
-    public int health;
-    public int economic;
-    public int happy;
-
-    public Image eat_bar;
-    public Image health_bar;
-    public Image economic_bar;
-    public Image happy_bar;
-
-
-    private void Start()
+    [Header("Actual Stats")]
+    [SerializeField] private int food;
+    [SerializeField] private int health;
+    [SerializeField] private int economic;
+    [SerializeField] private int happiness;
+    
+    public int Food
     {
-        eat = health = economic = happy = 5;
+        get => food;
+        set
+        {
+            food = value;
+            foodBar.fillAmount = food / 10f;
+        }
     }
 
-    private void Update()
+    public int Health
     {
-        eat_bar.fillAmount = eat / 10f;
-        health_bar.fillAmount = health / 10f;
-        economic_bar.fillAmount = economic / 10f;
-        happy_bar.fillAmount = happy / 10f;
+        get => health;
+        set
+        {
+            health = value;
+            healthBar.fillAmount = health / 10f;
+        }
+    }
+
+    public int Economic
+    {
+        get => economic;
+        set
+        {
+            economic = value;
+            economicBar.fillAmount = economic / 10f;
+        }
+    }
+
+    public int Happiness
+    {
+        get => happiness;
+        set
+        {
+            happiness = value;
+            happinessBar.fillAmount = happiness / 10f;
+        }
+    }
+
+    [Header("UI Elements")]
+    public Image economicBar;
+    public Image foodBar;
+    public Image happinessBar;
+    public Image healthBar;
+    
+    private void Start()
+    {
+        Food = Health = Economic = Happiness = 5;
     }
 }

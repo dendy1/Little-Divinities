@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-public class StateMachine
+﻿public class StateMachine
 {
     private IState _currentState;
 

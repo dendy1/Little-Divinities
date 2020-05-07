@@ -1,33 +1,26 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RainCatastrophe : AbstractCatastrophe
 {
-   [SerializeField] private List<BaseScriptableEffect> effects;
-   
-   public override void EffectOnMinions(List<MinionEffectable> minions)
+   private void Update()
    {
-      StartCoroutine(EffectCoroutine(minions));
-   }
-
-   private IEnumerator EffectCoroutine(List<MinionEffectable> minions)
-   {
-      while (Timer < duration)
+      if (!IsEnabled)
+         return;
+      
+      if (Timer.IsReady)
       {
-         foreach (var minion in minions)
-         {
-            foreach (var effect in effects)
-            {
-               minion.AddEffect(effect.InitializeEffect(minion.MinionStats));
-            }
-         }
-
-         Timer += Time.deltaTime;
-         yield return null;
+         IsEnabled = false;
+         islandController.catastropheEnabled = false;
+         gameObject.SetActive(false);
+         return;
       }
       
-      gameObject.SetActive(false);
+      foreach (var minion in islandController.MinionsEffectable)
+      {
+         foreach (var effect in effects)
+         {
+            minion.AddEffect(effect.InitializeEffect(minion.MinionStats));
+         }
+      }
    }
 }

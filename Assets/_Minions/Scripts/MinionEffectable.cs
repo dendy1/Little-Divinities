@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ public class MinionEffectable : MonoBehaviour
     
     private readonly Dictionary<BaseScriptableEffect, BaseTimedEffect> _effects = new Dictionary<BaseScriptableEffect, BaseTimedEffect>();
 
-    private void Start()
+    private void Awake()
     {
         MinionStats = GetComponent<MinionStats>();
     }

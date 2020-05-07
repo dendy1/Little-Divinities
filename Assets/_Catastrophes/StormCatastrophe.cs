@@ -1,34 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class StormCatastrophe : AbstractCatastrophe
 {
-    public float DurationTime = 2f;
-
-    public override void EffectOnMinions(List<MinionEffectable> minions)
+    private void Update()
     {
-        StartCoroutine(EffectCoroutine(minions));
-    }
-
-    private IEnumerator EffectCoroutine(List<MinionEffectable> minions)
-    {
-        yield return new WaitForSeconds(DurationTime);
-        
-        if (minions.Count > 1)
+        if (!IsEnabled)
+            return;
+      
+        if (Timer.IsReady)
         {
-            var count = Random.Range(1, 3);
-            
-            for (int i = 0; i < count; i++)
+            foreach (var minion in islandController.MinionsEffectable)
             {
-                minions[Random.Range(0, minions.Count)].GetComponent<MinionDescriptor>().Die();
+                foreach (var effect in effects)
+                {
+                    minion.AddEffect(effect.InitializeEffect(minion.MinionStats));
+                }
             }
+            
+            IsEnabled = false;
+            islandController.catastropheEnabled = false;
+            gameObject.SetActive(false);
         }
-        else if (minions.Count == 1)
-        {
-            minions[0].GetComponent<MinionDescriptor>().Die();
-        }
-
-        gameObject.SetActive(false);
     }
 }

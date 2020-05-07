@@ -24,10 +24,10 @@ public class CatastrophesManager : MonoBehaviourSingleton<CatastrophesManager>
             {
                 var index = Random.Range(0, islandControllers.Count);
                 
-                if (islandControllers[index].catastrophe)
+                if (islandControllers[index].catastropheEnabled)
                     continue;
 
-                islandControllers[index].catastrophe = true;
+                islandControllers[index].catastropheEnabled = true;
                 islandControllers[index].StartRandomWeatherCondition();
             }
         }

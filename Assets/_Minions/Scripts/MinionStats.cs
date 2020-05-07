@@ -11,14 +11,19 @@ public class MinionStats : MonoBehaviour
 
     public IdleState idleState;
     public HarvestState harvestState;
-    public HealState healState;
+    public VacationState vacationState;
     public DieState dieState;
+    public MergeState mergeState;
         
     public float currentHp;
     public float currentHarvestRate;
     public float currentFatigueRate;
 
+    public StateMachine StateMachine => _stateMachine;
     public MinionBaseStats BaseStats => _baseStats;
+    
+    public IslandController MainIslandController;
+    public IslandController CurrentIslandController;
 
     public UnityEvent dead = new UnityEvent();
     
@@ -28,21 +33,21 @@ public class MinionStats : MonoBehaviour
         _baseStats = GetComponent<MinionBaseStats>();
         _interface = GetComponent<MinionInterface>();
         
-        idleState = new IdleState(this, _baseStats, _interface, _stateMachine);
-        harvestState = new HarvestState(this, _baseStats, _interface, _stateMachine);
-        healState = new HealState(this, _baseStats, _interface, _stateMachine);
-        dieState = new DieState(this, _baseStats, _interface, _stateMachine);
-    }
-
-    private void Start()
-    {
         currentHp = _baseStats.hp;
         currentHarvestRate = _baseStats.harvestRate;
         currentFatigueRate = _baseStats.fatigueRate;
         
+        idleState = new IdleState(this, _baseStats, _interface, _stateMachine);
+        harvestState = new HarvestState(this, _baseStats, _interface, _stateMachine);
+        vacationState = new VacationState(this, _baseStats, _interface, _stateMachine);
+        dieState = new DieState(this, _baseStats, _interface, _stateMachine);
+        mergeState = new MergeState(this, _baseStats, _interface, _stateMachine);
+    }
+
+    private void Start()
+    {
         dead.AddListener(OnDead);
-        
-        _stateMachine.ChangeState(idleState);
+        _stateMachine.ChangeState(harvestState);
     }
 
     private void Update()
@@ -57,5 +62,17 @@ public class MinionStats : MonoBehaviour
         // dead?.Invoke();
         // StopAllCoroutines();
         Destroy(gameObject);
+    }
+
+    public void RemoveFromIsland()
+    {
+        CurrentIslandController.RemoveMinion(this);
+    }
+
+    public void Refresh()
+    {
+        currentHp = _baseStats.hp;
+        currentFatigueRate = _baseStats.fatigueRate;
+        currentHarvestRate = _baseStats.harvestRate;
     }
 }

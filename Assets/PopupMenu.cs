@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PopupMenu : MonoBehaviour
 {
@@ -14,6 +15,14 @@ public class PopupMenu : MonoBehaviour
 
     private IslandController _controller;
 
+    private int _fingerID = -1;
+    private void Awake()
+    {
+#if !UNITY_EDITOR
+     _fingerID = 0; 
+#endif
+    }
+    
     private void Start()
     {
         _controller = GetComponent<IslandController>();
@@ -21,9 +30,17 @@ public class PopupMenu : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GameManager.Instance.PopupMenuOpened || CompareTag("VacationIsland") || CompareTag("MergeIsland"))
+        if (EventSystem.current.IsPointerOverGameObject(_fingerID) || TranslationManager.Instance.SelectedMinion)    // is the touch on the GUI
+        {
+            // GUI Action
             return;
-        
+        }
+
+        if (GameManager.Instance.PopupMenuOpened || CompareTag("VacationIsland") || CompareTag("MergeIsland"))
+        {
+            return;
+        }
+
         popupMenuController.gameObject.SetActive(true);
         GameManager.Instance.PopupMenuOpened = true;
         UpdateTextFields();

@@ -540,6 +540,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2552382712692345633}
   - component: {fileID: 6063021758948876903}
+  - component: {fileID: 2103872262018323322}
   m_Layer: 0
   m_Name: "\u041A\u0443\u0431"
   m_TagString: Untagged
@@ -645,6 +646,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000067453366, y: 0.002490108, z: 0.025952796}
     m_Extent: {x: 0.010973463, y: 0.015062201, z: 0.02636846}
   m_DirtyAABB: 0
+--- !u!114 &2103872262018323322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3189585362102565257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!1 &3340806635594308930
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,10 +972,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8414651836226297637}
   - component: {fileID: 1895129797392069215}
-  - component: {fileID: 96602384832743850}
   - component: {fileID: 9124765770011759357}
   - component: {fileID: 2513674081910142522}
   - component: {fileID: 6349074222780259670}
+  - component: {fileID: 733924357444290285}
+  - component: {fileID: -7374486220962763444}
+  - component: {fileID: 96602384832743850}
   m_Layer: 0
   m_Name: Stoneman
   m_TagString: Untagged
@@ -1000,19 +1019,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!65 &96602384832743850
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4800134184432414006}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.74, y: 4.77, z: 2.17}
-  m_Center: {x: 0, y: 2.41, z: 0.41}
 --- !u!114 &9124765770011759357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1025,7 +1031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4cb016dba972774c8f7287da4b5ac4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
+  hp: 200
   harvestRate: 5
   fatigueRate: 5
   resourceTypeProduction: 1
@@ -1045,8 +1051,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHp: 0
-  currentProductionRate: 0
+  currentHarvestRate: 0
   currentFatigueRate: 0
+  MainIslandController: {fileID: 0}
+  CurrentIslandController: {fileID: 0}
   dead:
     m_PersistentCalls:
       m_Calls: []
@@ -1068,6 +1076,43 @@ MonoBehaviour:
   badHpImage: {fileID: 8503992591917298775}
   goodHpImage: {fileID: 330018116669074291}
   uiAnimationSpeed: 2
+--- !u!114 &733924357444290285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4800134184432414006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08dc19c5ad0b66649a8f03951de41a34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7374486220962763444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4800134184432414006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c464eca5f2ab4634dbadf643ec302f64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &96602384832743850
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4800134184432414006}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.74, y: 4.77, z: 2.17}
+  m_Center: {x: 0, y: 2.41, z: 0.41}
 --- !u!1 &4827731737632876837
 GameObject:
   m_ObjectHideFlags: 0

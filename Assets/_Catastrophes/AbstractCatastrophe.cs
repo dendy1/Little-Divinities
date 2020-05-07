@@ -3,11 +3,22 @@ using UnityEngine;
 
 public abstract class AbstractCatastrophe : MonoBehaviour
 {
-    public float duration;
-    protected float Timer;
+    [SerializeField] protected List<BaseScriptableEffect> effects;
+    [SerializeField] protected IslandController islandController;
+    
+    [SerializeField] protected float duration;
+    protected bool IsEnabled;
+    protected Delay Timer;
 
-    public virtual void EffectOnMinions(List<MinionEffectable> minions)
+    private void Awake()
     {
-        
+        Timer = new Delay(duration);
+    }
+
+    public void StartCatastrophe()
+    {
+        IsEnabled = true;
+        islandController.catastropheEnabled = true;
+        Timer.Reset();
     }
 }
