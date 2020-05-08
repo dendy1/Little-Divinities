@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         set
         {
             _woodCount = value;
-            InterfaceManager.Instance.UpdateCrystalTextField();
+            InterfaceManager.Instance.UpdateWoodTextField();
         }
     }
 
@@ -113,28 +113,28 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         mergeIslandController.SetActiveOutline(active);
     }
 
-    public void Harvest(ResourceType resourceType, float power)
+    public void Harvest(ResourceType resourceType, float value)
     {
         switch (resourceType)
         {
             case ResourceType.Wood:
-                WoodCount += power;
+                WoodCount += value;
                 break;
             
             case ResourceType.Stone:
-                StoneCount += power;
+                StoneCount += value;
                 break;
             
             case ResourceType.Water:
-                WaterCount += power;
+                WaterCount += value;
                 break;
             
             case ResourceType.Power:
-                CrystalCount += power;
+                PowerCount += value;
                 break;
             
             case ResourceType.Shards:
-                CrystalCount += power;
+                CrystalCount += value;
                 break;
         }
     }

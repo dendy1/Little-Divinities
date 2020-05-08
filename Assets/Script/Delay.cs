@@ -1,22 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Delay
 {
     public float WaitTime;
-    private float completionTime;
+    private float _completionTime = float.MaxValue;
  
-    public Delay(float waitTime)
+    public Delay(float waitTime, bool stopped = false)
     {
         WaitTime = waitTime;
-        Reset();
+        
+        if (!stopped)
+            Reset();
+    }
+    
+    public float RemainingTime()
+    {
+        return _completionTime - Time.time;
     }
  
     public void Reset()
     {
-        completionTime = Time.time + WaitTime;
+        _completionTime = Time.time + WaitTime;
+    }
+    
+    public void Stop()
+    {
+        _completionTime = float.MaxValue;
     }
  
-    public bool IsReady { get { return Time.time >= completionTime; } }
+    public bool IsReady => Time.time >= _completionTime;
 }

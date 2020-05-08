@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
@@ -36,28 +38,46 @@ public class SituationsController : MonoBehaviour
     [SerializeField] private GameObject stoneRes;
     [SerializeField] private GameObject powerRes;
     [SerializeField] private GameObject waterRes;
+    
+    [Header("PopUp UI Human Stats TextFields")]
+    [SerializeField] private TMP_Text economyText;
+    [SerializeField] private TMP_Text foodText;
+    [SerializeField] private TMP_Text happinessText;
+    [SerializeField] private TMP_Text healthText;
 
-    private int _id;
-    private float _timer;
+    [Header("PopUp Human Stats GameObjects")] 
+    [SerializeField] private GameObject economyRes;
+    [SerializeField] private GameObject foodRes;
+    [SerializeField] private GameObject happinessRes;
+    [SerializeField] private GameObject healthRes;
+
+    [Header("Situation Settings")] 
+    [SerializeField] private float ignoreTime = 10f;
+    
+    private int _situationId;
     private HumanStats _humanStats;
+    private Delay _situationDelay;
+    private Delay _skipDelay;
+
+    [SerializeField] private float minTime = 30f;
+    [SerializeField] private float maxTime = 50f;
     
     private GameManager GameManager => GameManager.Instance;
 
     private void Awake()
     {
         _humanStats = GetComponent<HumanStats>();
-        startSituationPopup.GetComponent<Animator>().SetBool("active", false);
+        _situationDelay = new Delay(10f);
+        _skipDelay = new Delay(ignoreTime, true);
     }
 
     private void Start()
     {
-        _id = 0;
+        _situationId = 0;
+
         situationPopup.SetActive(false);
         skipPopup.SetActive(false);
 
-        _timer = Random.Range(80, 140);
-        StartCoroutine(TimerSituation());
-        
         #region Имя
         _names.Add("Затор на шахте");
         _names.Add("Метеорит");
@@ -104,22 +124,28 @@ public class SituationsController : MonoBehaviour
         #endregion
     }
 
-    public void StartSituation()
+    private void Update()
     {
-        StopAllCoroutines();
-        startSituationPopup.GetComponent<Animator>().SetBool("active", false);
-        StartCoroutine(StopTime());
-        situationPopup.SetActive(true);
+        if (_situationId >= _names.Count)
+            return;
+        
+        if (_situationDelay.IsReady)
+        {
+            startSituationPopup.gameObject.SetActive(true);
+            _skipDelay.Reset();
+            _situationDelay.Stop();
+        }
 
-        nameText.text = _names[_id];
-        descriptionText.text = _descriptions[_id];
-        goodText.text = _goods[_id];
-        badText.text = _bads[_id];
+        if (_skipDelay.IsReady)
+        {
+            SkipSituation();
+            _skipDelay.Stop();
+        }
     }
 
-    public void GoodChoicePrice()
+    private void GoodChoicePrice()
     {
-        if (_id == 0)
+        if (_situationId == 0)
         {
             if (GameManager.WoodCount >= 50)
             {
@@ -127,7 +153,7 @@ public class SituationsController : MonoBehaviour
             }
         }
         
-        if (_id == 1)
+        if (_situationId == 1)
         {
             if (GameManager.PowerCount >= 20 && GameManager.WoodCount >= 20)
             {
@@ -136,7 +162,7 @@ public class SituationsController : MonoBehaviour
             }
         }
         
-        if (_id == 2)
+        if (_situationId == 2)
         {
             if (GameManager.PowerCount >= 30)
             {
@@ -144,7 +170,7 @@ public class SituationsController : MonoBehaviour
             }
         }
         
-        if (_id == 3)
+        if (_situationId == 3)
         {
             if (GameManager.WoodCount >= 50)
             {
@@ -152,7 +178,7 @@ public class SituationsController : MonoBehaviour
             }
         }
         
-        if (_id == 4)
+        if (_situationId == 4)
         {
             if (GameManager.StoneCount >= 20 && GameManager.WoodCount >= 20)
             {
@@ -161,7 +187,7 @@ public class SituationsController : MonoBehaviour
             }
         }
         
-        if (_id == 5)
+        if (_situationId == 5)
         {
             if (GameManager.WoodCount >= 20)
             {
@@ -170,9 +196,9 @@ public class SituationsController : MonoBehaviour
         }
     }
 
-    public void BadChoicePrice()
+    private void BadChoicePrice()
     {
-        if (_id == 0)
+        if (_situationId == 0)
         {
             if (GameManager.StoneCount >= 50)
             {
@@ -180,7 +206,7 @@ public class SituationsController : MonoBehaviour
             }
         }
         
-        if (_id == 1)
+        if (_situationId == 1)
         {
             if (GameManager.PowerCount >= 30 && GameManager.StoneCount >= 20)
             {
@@ -189,7 +215,7 @@ public class SituationsController : MonoBehaviour
             }
         }
         
-        if (_id == 2)
+        if (_situationId == 2)
         {
             if (GameManager.WaterCount >= 40)
             {
@@ -197,7 +223,7 @@ public class SituationsController : MonoBehaviour
             }
         }
         
-        if (_id == 3)
+        if (_situationId == 3)
         {
             if (GameManager.WaterCount >= 50)
             {
@@ -205,7 +231,7 @@ public class SituationsController : MonoBehaviour
             }
         }
         
-        if (_id == 4)
+        if (_situationId == 4)
         {
             if (GameManager.WaterCount >= 10 && GameManager.PowerCount >= 30)
             {
@@ -214,7 +240,7 @@ public class SituationsController : MonoBehaviour
             }
         }
         
-        if (_id == 5)
+        if (_situationId == 5)
         {
             if (GameManager.PowerCount >= 40)
             {
@@ -223,202 +249,306 @@ public class SituationsController : MonoBehaviour
         }
     }
 
-    public void GoodChoiceResult()
+    private void GoodChoiceResult()
     {
-        if (_id == 0)
+        if (_situationId == 0)
         {
             _humanStats.Health++;
             _humanStats.Happiness++;
         }
         
-        if (_id == 1)
+        if (_situationId == 1)
         {
             _humanStats.Health++;
             _humanStats.Happiness++;
         }
         
-        if (_id == 2)
+        if (_situationId == 2)
         {
             _humanStats.Food++;
         }
         
-        if (_id == 3)
+        if (_situationId == 3)
         {
             _humanStats.Health++;
             _humanStats.Food++;
         }
         
-        if (_id == 4)
+        if (_situationId == 4)
         {
             _humanStats.Economic++;
             _humanStats.Happiness++;
         }
         
-        if (_id == 5)
+        if (_situationId == 5)
         {
             _humanStats.Economic++;
             _humanStats.Happiness++;
         }
 
+        _situationId++;
+        _situationDelay.WaitTime = Random.Range(minTime, maxTime);
+        _situationDelay.Reset();
+        
         Time.timeScale = 1;
-        _id++;
         situationPopup.SetActive(false);
-
-        _timer = Random.Range(80, 140);
-        StartCoroutine(TimerSituation());
     }
 
-    public void BadChoiceResult()
+    private void BadChoiceResult()
     {
-        if (_id == 0)
+        if (_situationId == 0)
         {
             _humanStats.Happiness--;
             _humanStats.Health -= 2;
         }
         
-        if (_id == 1)
+        if (_situationId == 1)
         {
             _humanStats.Health--;
             _humanStats.Happiness--;
             _humanStats.Economic--;
         }
         
-        if (_id == 2)
+        if (_situationId == 2)
         {
             _humanStats.Food--;
             _humanStats.Health--;
         }
         
-        if (_id == 3)
+        if (_situationId == 3)
         {
             _humanStats.Health--;
             _humanStats.Food--;
         }
         
-        if (_id == 4)
+        if (_situationId == 4)
         {
             _humanStats.Economic--;
             _humanStats.Health--;
         }
         
-        if (_id == 5)
+        if (_situationId == 5)
         {
             _humanStats.Food++;
             _humanStats.Health++;
         }
         
-        Time.timeScale = 1;
-        _id++;
-        situationPopup.SetActive(false);
-
-        _timer = Random.Range(80, 140);
-        StartCoroutine(TimerSituation());
-    }
-    
-    public void IgnoreChoiceResult()  // Если игрок выбрал "Ничего не делать"
-    {
-        skipPopup.SetActive(true);
-        
-        Time.timeScale = 1;
-        _id++;
-        situationPopup.SetActive(false);
-
-        _timer = Random.Range(80, 140);
-        StartCoroutine(TimerSituation());
-    }
-    
-    public void SkipSituation()  // Если игрок не успел ничего выбрать
-    {
-        startSituationPopup.GetComponent<Animator>().SetBool("active", false);
-        skipPopup.SetActive(true);
+        _situationId++;
+        _situationDelay.WaitTime = Random.Range(minTime, maxTime);
+        _situationDelay.Reset();
         
         Time.timeScale = 1;
         situationPopup.SetActive(false);
+    }
+    
+    private void IgnoreChoiceResult()  // Если игрок выбрал "Ничего не делать"
+    {
+        _situationId++;
+        _situationDelay.WaitTime = Random.Range(minTime, maxTime);
+        _situationDelay.Reset();
+        
+        Time.timeScale = 1;
+        situationPopup.SetActive(false);
+        
+        skipPopup.SetActive(true);
+        Penalty();
+    }
+    
+    private void SkipSituation()  // Если игрок не успел ничего выбрать
+    {
+        _situationDelay.WaitTime = Random.Range(80, 140);
+        _situationDelay.Reset();
+        
+        startSituationPopup.gameObject.SetActive(false);
+        skipPopup.SetActive(true);
+        Penalty();
+    }
+    
+    private void Penalty()
+    {
+        GameManager.WoodCount -= 10;
+        GameManager.StoneCount -= 10;
+        GameManager.PowerCount -= 10;
+        GameManager.WaterCount -= 10;
+    }
+
+    #region UI Event Handlers
+
+    public void OnStartSituationClicked()
+    {
+        nameText.text = _names[_situationId];
+        descriptionText.text = _descriptions[_situationId];
+        goodText.text = _goods[_situationId];
+        badText.text = _bads[_situationId];
+        
+        startSituationPopup.SetActive(false);
+        situationPopup.SetActive(true);
+        Time.timeScale = 0;
+        
+        _situationDelay.Stop();
+        _skipDelay.Stop();
+    } 
+
+    public void OnGoodChoiceClicked()
+    {
+        GoodChoicePrice();
+        GoodChoiceResult();
+    }
+
+    public void OnBadChoiceClicked()
+    {
+        BadChoicePrice();
+        BadChoiceResult();
+    }
+
+    public void OnSkipChoiceClicked()
+    {
+        IgnoreChoiceResult();
     }
     
     public void OnEnterGoodChoiceButton() // Если игрок навёл на кнопку с хорошим выбором
     {
-        if (_id == 0)
+        if (_situationId == 0)
         {
             woodRes.SetActive(true);
             woodText.text = "-50";
+
+            healthRes.SetActive(true);            
+            healthText.text = "++";
+            happinessRes.SetActive(true);
+            happinessText.text = "++";
         }
         
-        if (_id == 1)
+        if (_situationId == 1)
         {
             woodRes.SetActive(true);
-            powerRes.SetActive(true);
             woodText.text = "-20";
+            powerRes.SetActive(true);
             powerText.text = "-20";
+
+            healthRes.SetActive(true);
+            healthText.text = "++";
+            happinessRes.SetActive(true);
+            happinessText.text = "++";
         }
         
-        if (_id == 2)
+        if (_situationId == 2)
         {
             powerRes.SetActive(true);
             powerText.text = "-30";
+
+            foodRes.SetActive(true);
+            foodText.text = "++";
         }
         
-        if (_id == 3)
+        if (_situationId == 3)
         {
             woodRes.SetActive(true);
             woodText.text = "-50";
+
+            foodRes.SetActive(true);
+            foodText.text = "++";
+            healthRes.SetActive(true);
+            healthText.text = "++";
         }
         
-        if (_id == 4)
+        if (_situationId == 4)
         {
             woodRes.SetActive(true);
             woodText.text = "-20";
             stoneRes.SetActive(true);
             stoneText.text = "-20";
+            
+            economyRes.SetActive(true);
+            economyText.text = "++";
+            happinessRes.SetActive(true);
+            happinessText.text = "++";
         }
         
-        if (_id == 5)
+        if (_situationId == 5)
         {
             woodRes.SetActive(true);
             woodText.text = "-50";
+            
+            economyRes.SetActive(true);
+            economyText.text = "++";
+            happinessRes.SetActive(true);
+            happinessText.text = "++";
         }
     }
-    
+
     public void OnEnterBadChoiceButton() // Если игрок навёл на кнопку с плохим выбором
     {
-        if (_id == 0)
+        if (_situationId == 0)
         {
             stoneRes.SetActive(true);
             stoneText.text = "-50";
+
+            happinessRes.SetActive(true);
+            happinessText.text = "--";
+            healthRes.SetActive(true);
+            healthText.text = "--";
         }
-        
-        if (_id == 1)
+
+        if (_situationId == 1)
         {
             stoneRes.SetActive(true);
             stoneText.text = "-20";
             powerRes.SetActive(true);
             powerText.text = "-30";
+
+            happinessRes.SetActive(true);
+            happinessText.text = "--";
+            healthRes.SetActive(true);
+            healthText.text = "--";
+            economyRes.SetActive(true);
+            economyText.text = "--";
         }
-        
-        if (_id == 2)
+
+        if (_situationId == 2)
         {
             waterRes.SetActive(true);
             waterText.text = "-40";
+
+            foodRes.SetActive(true);
+            foodText.text = "--";
+            healthRes.SetActive(true);
+            healthText.text = "--";
         }
-        
-        if (_id == 3)
+
+        if (_situationId == 3)
         {
             waterRes.SetActive(true);
             waterText.text = "-50";
+
+            foodRes.SetActive(true);
+            foodText.text = "--";
+            healthRes.SetActive(true);
+            healthText.text = "--";
         }
-        
-        if (_id == 4)
+
+        if (_situationId == 4)
         {
             waterRes.SetActive(true);
             waterText.text = "-10";
             powerRes.SetActive(true);
             powerText.text = "-30";
+
+            economyRes.SetActive(true);
+            economyText.text = "--";
+            healthRes.SetActive(true);
+            healthText.text = "--";
         }
         
-        if (_id == 5)
+        if (_situationId == 5)
         {
             powerRes.SetActive(true);
             powerText.text = "-40";
+
+            foodRes.SetActive(true);
+            foodText.text = "--";
+            healthRes.SetActive(true);
+            healthText.text = "--";
         }
     }
 
@@ -428,36 +558,17 @@ public class SituationsController : MonoBehaviour
         stoneRes.SetActive(false);
         waterRes.SetActive(false);
         powerRes.SetActive(false);
-    }
-
-    IEnumerator TimerSituation()
-    {
-        yield return new WaitForSeconds(_timer);
-        startSituationPopup.GetComponent<Animator>().SetBool("active", true);
-        StartCoroutine(TimeToShtraf());
-    }
-    
-    IEnumerator StopTime()
-    {
-        yield return new WaitForSeconds(1.1f);
-        Time.timeScale = 0;
-    }
-    
-    IEnumerator TimeToShtraf()
-    {
-        yield return new WaitForSeconds(10f);
-        SkipSituation();
-    }
-
-    public void Penalty()
-    {
-        GameManager.WoodCount -= 10;
-        GameManager.StoneCount -= 10;
-        GameManager.PowerCount -= 10;
-        GameManager.WaterCount -= 10;
         
-        _timer = Random.Range(5, 9);
-        StartCoroutine(TimerSituation());
-        skipPopup.SetActive(false);
+        foodRes.SetActive(false);
+        healthRes.SetActive(false);
+        economyRes.SetActive(false);
+        happinessRes.SetActive(false);
     }
+
+    public void OnCloseButtonClicked(GameObject gameObject)
+    {
+        gameObject.SetActive(false);
+    }
+
+    #endregion
 }

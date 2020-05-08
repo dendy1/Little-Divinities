@@ -75,4 +75,6 @@ public class MinionStats : MonoBehaviour
         currentFatigueRate = _baseStats.fatigueRate;
         currentHarvestRate = _baseStats.harvestRate;
     }
+
+    public bool IsWorking => _stateMachine.CurrentState == harvestState;
 }

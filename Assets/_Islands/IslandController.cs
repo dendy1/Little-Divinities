@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Outline = cakeslice.Outline;
 using Random = UnityEngine.Random;
@@ -115,4 +116,6 @@ public class IslandController : MonoBehaviour
             catastropheList[catastrophe].StartCatastrophe();
         }
     }
+
+    public int WorkingMinions => _minions.Count(m => m.IsWorking);
 }

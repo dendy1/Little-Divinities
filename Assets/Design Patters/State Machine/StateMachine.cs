@@ -2,6 +2,8 @@
 {
     private IState _currentState;
 
+    public IState CurrentState => _currentState;
+
     public void Update()
     {
         _currentState?.Execute();

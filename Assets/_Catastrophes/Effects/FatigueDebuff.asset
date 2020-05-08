@@ -15,4 +15,4 @@ MonoBehaviour:
   duration: 5
   isDurationStacked: 0
   isEffectStacked: 0
-  FatigueChange: 5
+  FatigueChange: 2

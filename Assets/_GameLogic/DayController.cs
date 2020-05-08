@@ -2,15 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using  TMPro;
+using TMPro;
 
 public class DayController : MonoBehaviour
 {
     public int currentDay;
+        
+    [Header("Settings for day length")] 
+    [SerializeField] private int minutes = 10;
+    [SerializeField] private int seconds = 0;
+
+    [Header("Desired resources for day")] 
+    [SerializeField] private float desiredWood;
+    [SerializeField] private float desiredStone;
+    [SerializeField] private float desiredPower;
+    [SerializeField] private float desiredWater;
 
     [Header("GameLogic PopUp GameObjects")] 
-    [SerializeField] private GameObject popupDayStart;
-    [SerializeField] private GameObject popupDayFinish;
+    [SerializeField] private GameObject popupDayInfo;
 
     [Header("Start Day PopUp UI Resources GameObjects")] 
     [SerializeField] private GameObject woodRes;
@@ -28,129 +37,138 @@ public class DayController : MonoBehaviour
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text descriptionText;
 
-    [Header("Desired Resources for Day")] 
-    [SerializeField] private float desiredWood;
-    [SerializeField] private float desiredStone;
-    [SerializeField] private float desiredPower;
-    [SerializeField] private float desiredWater;
-
-    private bool timeStart;
-
     [Header("Day/Time TextField for UI")] 
     [SerializeField] private TMP_Text dayText;
     [SerializeField] private TMP_Text timeText;
     
-    
-    public int min, sec;
-
     private GameManager GameManager => GameManager.Instance;
+    private Delay _dayDelay;
+
+    private const int SECONDS_IN_MINUTE = 60;
+
+    private void Awake()
+    {
+        _dayDelay = new Delay(minutes * SECONDS_IN_MINUTE + seconds, true);
+    }
 
     private void Start()
     {
-        min = 10;
-        sec = 0;
-        
         currentDay = 1;
-        popupDayStart.SetActive(true);
-        popupDayFinish.SetActive(false);
-
-        DayFromPopUp();
+        timeText.text = "";
+        dayText.text = "";
+        
+        SetStartDayData();
+        popupDayInfo.SetActive(true);
 
         GameManager.Instance.PopupMenuOpened = true;
-    }
-
-    public void EndDayPopUp()
-    {
         Time.timeScale = 0;
-        popupDayFinish.SetActive(true);
-        
-        if (currentDay == 1)
-        {
-            if (GameManager.WoodCount >= desiredWood && GameManager.StoneCount >= desiredStone) 
-            {
-                GameManager.WoodCount -= desiredWood;
-                GameManager.StoneCount -= desiredStone;
-                
-                descriptionText.text = "Молодец! Все ресурсы собраны!";
-            }
-            else
-            {
-                descriptionText.text = "Ты не собрал нужное количество ресурсов. Завтра тебя ждет кара";
-            }
-        }
-    }
-
-    public void ButNextDay()
-    {
-        // TODO: СДЕЛАТЬ ПЕРЕХОД К НОВОМУ ДНЮ
-    }
-
-    public void ButStartDay()
-    {
-        popupDayStart.SetActive(false);
-        Time.timeScale = 1;
-        timeStart = true;
-        StartCoroutine(TimeGL());
-        GameManager.Instance.PopupMenuOpened = false;
-        StartCoroutine(TimerDay());
-    }
-
-    public void DayFromPopUp()  //Выстраивает внутренность поп-апа
-    {
-        if (currentDay == 1)
-        {
-            woodRes.SetActive(true);
-            stoneRes.SetActive(true);
-            waterRes.SetActive(false);
-            powerRes.SetActive(false);
-
-            desiredWood = 50;
-            desiredStone = 50;
-
-            woodText.text = "" + desiredWood;
-            stoneText.text = "" + desiredStone;
-
-            Time.timeScale = 0;
-        }
-    }
-
-    IEnumerator TimerDay()
-    {
-        timeStart = true;
-        yield return new WaitForSeconds(720);
-        timeStart = false;
-        StartCoroutine(TimeGL());
-        EndDayPopUp();
     }
 
     private void Update()
     {
-        dayText.text = "День " + currentDay;
-        
-        if (timeStart)
+        if (_dayDelay.IsReady)
         {
-            if (sec < 10)
-            {
-                timeText.text = min + ":0" + sec;
-            }
-            
-            if (sec >= 10)
-            {
-                timeText.text = min + ":" + sec;
-            }
+            DayEnded();
+            _dayDelay.Stop();
         }
     }
 
-    IEnumerator TimeGL()
+    private void DayEnded()
     {
-        yield return new WaitForSeconds(1);
-        sec++;
-        if (sec == 60)
-        {
-            min++;
-            sec = 0;
-        }
+        SetEndDayData();
+        popupDayInfo.SetActive(true);
+        
+        GameManager.Instance.PopupMenuOpened = true;
+        Time.timeScale = 0;
+        currentDay++;
+    }
 
-        StartCoroutine(TimeGL());
+    private void SetStartDayData()  //Выстраивает внутренность поп-апа для начала дня
+    {
+        if (currentDay == 1)
+        {
+            if (desiredWood > 0)
+            {
+                woodRes.SetActive(true);
+                woodText.text = "" + desiredWood;
+            }
+            
+            if (desiredStone > 0)
+            {
+                stoneRes.SetActive(true);
+                stoneText.text = "" + desiredStone;
+            }
+            
+            if (desiredPower > 0)
+            {
+                powerRes.SetActive(true);
+                powerText.text = "" + desiredPower;
+            }
+            
+            if (desiredWater > 0)
+            {
+                waterRes.SetActive(true);
+                waterText.text = "" + desiredWater;
+            }
+        }
+    }
+    
+    private void SetEndDayData()  //Выстраивает внутренность поп-апа для конца для
+    {
+        if (currentDay == 1)
+        {
+            if (GameManager.WoodCount >= desiredWood && GameManager.StoneCount >= desiredStone && GameManager.PowerCount >= desiredPower && GameManager.WaterCount >= desiredWater) 
+            {
+                GameManager.WoodCount -= desiredWood;
+                GameManager.StoneCount -= desiredStone;
+                GameManager.PowerCount -= desiredPower;
+                GameManager.WaterCount -= desiredWater;
+
+                nameText.text = "Удача!";
+                descriptionText.text = "Молодец! Все ресурсы собраны!";
+            }
+            else
+            {
+                nameText.text = "Проигрыш!";
+                descriptionText.text = "Ты не собрал нужное количество ресурсов. Завтра тебя ждет кара";
+            }
+        }
+    }
+    
+    private IEnumerator UpdateTimerTextCoroutine()
+    {
+        while(!_dayDelay.IsReady)
+        {
+            var remainingTime = _dayDelay.RemainingTime();
+
+            int minutes = Mathf.FloorToInt(remainingTime / SECONDS_IN_MINUTE);
+            int seconds = Mathf.FloorToInt(remainingTime % SECONDS_IN_MINUTE);
+            
+            timeText.text = $"{minutes:00}:{seconds:00}";
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+    
+    public void OnStartDayButtonClicked()
+    {
+        if (currentDay == 1)
+        {
+            popupDayInfo.SetActive(false);
+            _dayDelay.Reset();
+            Time.timeScale = 1;
+            GameManager.Instance.PopupMenuOpened = false;
+            dayText.text = "День: " + currentDay;
+            StartCoroutine(UpdateTimerTextCoroutine());
+        }
+        else
+        {
+            popupDayInfo.SetActive(false);
+            StopCoroutine(UpdateTimerTextCoroutine());
+            timeText.text = "";
+            dayText.text = "";
+            Time.timeScale = 1;
+            GameManager.Instance.PopupMenuOpened = false;
+            _dayDelay.Stop();
+        }
     }
 }

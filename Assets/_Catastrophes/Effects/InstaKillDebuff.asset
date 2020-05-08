@@ -15,4 +15,4 @@ MonoBehaviour:
   duration: 0
   isDurationStacked: 0
   isEffectStacked: 0
-  InstaKillChance: 100
+  InstaKillChance: 20

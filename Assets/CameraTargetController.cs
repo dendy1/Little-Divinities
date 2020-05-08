@@ -1,10 +1,9 @@
-﻿using TMPro.Examples;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CameraTargetController : MonoBehaviour, IPointerDownHandler
 {
-    private CameraController _cameraController;
+    //private CameraController _cameraController;
     
     float clicked = 0;
     float clicktime = 0;
@@ -12,7 +11,7 @@ public class CameraTargetController : MonoBehaviour, IPointerDownHandler
 
     private void Start()
     {
-        _cameraController = Camera.main.GetComponent<CameraController>();
+        //_cameraController = Camera.main.GetComponent<CameraController>();
     }
 
     public void OnPointerDown(PointerEventData data)
@@ -25,7 +24,7 @@ public class CameraTargetController : MonoBehaviour, IPointerDownHandler
             clicked = 0;
             clicktime = 0;
             Debug.Log("Double CLick: "+this.GetComponent<RectTransform>().name);
-            _cameraController.CameraTarget = transform;
+            //_cameraController.CameraTarget = transform;
 
         }
         else if (clicked > 2 || Time.time - clicktime > 1) 

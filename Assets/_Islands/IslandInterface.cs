@@ -24,7 +24,7 @@ public class IslandInterface : MonoBehaviour
         }
         else
         {
-            _animationState.speed = _islandController.MinionsCount;
+            _animationState.speed = _islandController.WorkingMinions;
             resourceImageGameObject.SetActive(true);
         }
     }
