@@ -1,20 +1,26 @@
-﻿public class MergeIslandController : IslandController
+﻿using UnityEngine;
+
+public class MergeIslandController : IslandController
 {
     private void OnMouseDown()
     {
         if (TranslationManager.Instance.SelectedMinion)
-        {
-            Selected.RemoveFromIsland();
-            Selected.StateMachine.ChangeState(Selected.mergeState);
-            Selected.transform.position = Spawner.RandomVector3();
-            AddMinion(Selected);
-            Selected = null;
-            
-            GameManager.Instance.SetActiveIslandsOutline(false);
-
-            if (MinionsCount > 1)
+        {  
+            var ray = MainCamera.ScreenPointToRay (Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                MergeMinions();
+                Selected.RemoveFromIsland();
+                Selected.StateMachine.ChangeState(Selected.mergeState);
+                Selected.transform.position = hit.point;
+                AddMinion(Selected);
+                Selected = null;
+            
+                GameManager.Instance.SetActiveIslandsOutline(false);
+
+                if (MinionsCount > 1)
+                {
+                    MergeMinions();
+                }
             }
         }
     }

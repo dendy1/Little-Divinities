@@ -22,7 +22,8 @@ public class IslandController : MonoBehaviour
     public bool rainUpgrade, fireUpgrade, stormUpgrade;
 
     private List<MinionStats> _minions;
-    private List<MinionEffectable> _minionsEffectable;
+    private List<MinionEffectable> _minionsEffectable; 
+    protected Camera MainCamera;
     
     public int MinionsCount => _minions.Count;
     public bool catastropheEnabled;
@@ -40,6 +41,7 @@ public class IslandController : MonoBehaviour
     private void Awake()
     {
         Spawner = GetComponent<Spawner>();
+        MainCamera = Camera.main;
     }
 
     private void Start()
@@ -55,16 +57,18 @@ public class IslandController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (TranslationManager.Instance.SelectedMinion)
+        if (TranslationManager.Instance.SelectedMinion && TranslationManager.Instance.SelectedMinion.MainIslandController == this)
         {
-            Selected.RemoveFromIsland();
-            Selected.StateMachine.ChangeState(Selected.harvestState);
-            var pos = Spawner.RandomVector3();
-            Selected.transform.position = pos;
-            AddMinion(Selected);
-            Selected = null;
-            
-            GameManager.Instance.SetActiveIslandsOutline(false);
+            var ray = MainCamera.ScreenPointToRay (Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                Selected.RemoveFromIsland();
+                Selected.StateMachine.ChangeState(Selected.harvestState);
+                Selected.transform.position = hit.point;
+                AddMinion(Selected);
+                Selected = null;
+                GameManager.Instance.SetActiveIslandsOutline(false);
+            }
         }
     }
 
