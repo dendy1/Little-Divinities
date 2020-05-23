@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
 
 public class InstaKillEffect : BaseTimedEffect
-{
-    private MinionStats _minionStats;
-    
+{    
     public InstaKillEffect(BaseScriptableEffect baseScriptableEffect, MinionStats minionStats) : base(baseScriptableEffect, minionStats)
     {
-        _minionStats = minionStats;
     }
 
     protected override void ApplyEffect()
@@ -17,7 +14,7 @@ public class InstaKillEffect : BaseTimedEffect
 
         if (Random.Range(0f, 100f) <= effect.InstaKillChance)
         {
-            _minionStats.dead?.Invoke();
+            MinionStats.dead?.Invoke();
         }
     }
 }

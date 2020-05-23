@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
 
 public class FatigueEffect : BaseTimedEffect
-{
-    private MinionStats _minionStats;
-    
+{    
     public FatigueEffect(BaseScriptableEffect baseScriptableEffect, MinionStats minionStats) : base(baseScriptableEffect, minionStats)
     {
-        _minionStats = minionStats;
     }
 
     protected override void ApplyEffect()
@@ -14,7 +11,7 @@ public class FatigueEffect : BaseTimedEffect
         base.ApplyEffect();
         
         FatigueScriptable effect = (FatigueScriptable)BaseScriptableEffect;
-        _minionStats.currentFatigueRate += effect.FatigueChange;
+        MinionStats.currentFatigueRate += effect.FatigueChange;
     }
 
     protected override void EndEffect()
@@ -22,7 +19,7 @@ public class FatigueEffect : BaseTimedEffect
         base.EndEffect();
         
         FatigueScriptable effect = (FatigueScriptable)BaseScriptableEffect;
-        _minionStats.currentFatigueRate -= effect.FatigueChange * EffectStacks;
+        MinionStats.currentFatigueRate -= effect.FatigueChange * EffectStacks;
         EffectStacks = 0;
     }
 }

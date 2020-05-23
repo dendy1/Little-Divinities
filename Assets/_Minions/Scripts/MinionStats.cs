@@ -7,7 +7,6 @@ public class MinionStats : MonoBehaviour
 {
     private StateMachine _stateMachine;
     private MinionBaseStats _baseStats;
-    private MinionInterface _interface;
 
     public IdleState idleState;
     public HarvestState harvestState;
@@ -31,17 +30,17 @@ public class MinionStats : MonoBehaviour
     {
         _stateMachine = new StateMachine();
         _baseStats = GetComponent<MinionBaseStats>();
-        _interface = GetComponent<MinionInterface>();
+        var @interface = GetComponent<MinionInterface>();
         
         currentHp = _baseStats.hp;
         currentHarvestRate = _baseStats.harvestRate;
         currentFatigueRate = _baseStats.fatigueRate;
         
-        idleState = new IdleState(this, _baseStats, _interface, _stateMachine);
-        harvestState = new HarvestState(this, _baseStats, _interface, _stateMachine);
-        vacationState = new VacationState(this, _baseStats, _interface, _stateMachine);
-        dieState = new DieState(this, _baseStats, _interface, _stateMachine);
-        mergeState = new MergeState(this, _baseStats, _interface, _stateMachine);
+        idleState = new IdleState(this, _baseStats, @interface, _stateMachine);
+        harvestState = new HarvestState(this, _baseStats, @interface, _stateMachine);
+        vacationState = new VacationState(this, _baseStats, @interface, _stateMachine);
+        dieState = new DieState(this, _baseStats, @interface, _stateMachine);
+        mergeState = new MergeState(this, _baseStats, @interface, _stateMachine);
     }
 
     private void Start()

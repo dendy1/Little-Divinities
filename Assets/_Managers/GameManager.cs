@@ -60,15 +60,6 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     #endregion
 
-    #region Human stats fields
-
-    public float Food { get; set; }
-    public float Health { get; set; }
-    public float Happiness { get; set; }
-    public float Economy { get; set; }
-
-    #endregion
-
     [Header("Resource Island Controllers")]
     public List<IslandController> islandControllers;
 

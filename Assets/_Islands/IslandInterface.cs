@@ -18,6 +18,8 @@ public class IslandInterface : MonoBehaviour
 
     private void Update()
     {
+        if (!resourceImageGameObject) return;
+        
         if (withoutIcon || _islandController.MinionsCount < 1)
         {
             resourceImageGameObject.SetActive(false);

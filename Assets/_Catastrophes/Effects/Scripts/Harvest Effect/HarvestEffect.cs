@@ -2,11 +2,8 @@
 
 public class HarvestEffect : BaseTimedEffect
 {
-    private MinionStats _minionStats;
-    
     public HarvestEffect(BaseScriptableEffect baseScriptableEffect, MinionStats minionStats) : base(baseScriptableEffect, minionStats)
     {
-        _minionStats = minionStats;
     }
 
     protected override void ApplyEffect()
@@ -14,7 +11,7 @@ public class HarvestEffect : BaseTimedEffect
         base.ApplyEffect();
 
         HarvestScriptable effect = (HarvestScriptable)BaseScriptableEffect;
-        _minionStats.currentHarvestRate += effect.HarvestChange;
+        MinionStats.currentHarvestRate += effect.HarvestChange;
     }
 
     protected override void EndEffect()
@@ -22,7 +19,7 @@ public class HarvestEffect : BaseTimedEffect
         base.EndEffect();
         
         HarvestScriptable effect = (HarvestScriptable)BaseScriptableEffect;
-        _minionStats.currentHarvestRate -= effect.HarvestChange * EffectStacks;
+        MinionStats.currentHarvestRate -= effect.HarvestChange * EffectStacks;
         EffectStacks = 0;
     }
 }

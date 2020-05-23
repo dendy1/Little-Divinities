@@ -5,7 +5,6 @@ public class MinionShopController : MonoBehaviour, IPointerClickHandler, IPointe
 {
     [Header("Logic Components")]
     [SerializeField] private IslandController islandController;
-    [SerializeField] private Spawner spawner;
 
     [Header("UI Components")]
     [SerializeField] private Sprite backgroundSprite;
@@ -20,7 +19,7 @@ public class MinionShopController : MonoBehaviour, IPointerClickHandler, IPointe
 
     private void Start()
     {
-        var minionStats = spawner.minionPrefab.GetComponent<MinionBaseStats>();
+        var minionStats = islandController.Spawner.minionPrefab.GetComponent<MinionBaseStats>();
 
         _shopButtonController.priceText.text = minionStats.cost.ToString();
         _shopButtonController.iconImage.sprite = minionStats.iconSprite;
@@ -28,9 +27,9 @@ public class MinionShopController : MonoBehaviour, IPointerClickHandler, IPointe
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (ShopManager.Instance.BuyMinion(spawner.minionPrefab, islandController))
+        if (ShopManager.Instance.BuyMinion(islandController.Spawner.minionPrefab, islandController))
         {
-            var minion = spawner.SpawnMinion();
+            var minion = islandController.Spawner.SpawnMinion();
             islandController.AddMinion(minion.GetComponent<MinionStats>());
         }
     }
