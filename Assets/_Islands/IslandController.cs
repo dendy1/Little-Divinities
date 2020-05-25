@@ -57,7 +57,7 @@ public class IslandController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (TranslationManager.Instance.SelectedMinion && TranslationManager.Instance.SelectedMinion.MainIslandController == this)
+        if (TranslationManager.Instance.SelectedMinion && TranslationManager.Instance.SelectedMinion.mainIslandController == this)
         {
             var ray = MainCamera.ScreenPointToRay (Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
@@ -74,10 +74,10 @@ public class IslandController : MonoBehaviour
 
     public void AddMinion(MinionStats minionStats)
     {
-        if (!minionStats.MainIslandController)
-            minionStats.MainIslandController = minionStats.CurrentIslandController = this;
+        if (!minionStats.mainIslandController)
+            minionStats.mainIslandController = minionStats.currentIslandController = this;
         else
-            minionStats.CurrentIslandController = this;
+            minionStats.currentIslandController = this;
         
         minionStats.dead.AddListener(() => _minions.Remove(minionStats));
         _minions.Add(minionStats);

@@ -13,17 +13,17 @@ public class TranslationManager : MonoBehaviourSingleton<TranslationManager>
 
             if (_selectedMinion)
             {
-                if (_selectedMinion.CurrentIslandController is MergeIslandController)
+                if (_selectedMinion.currentIslandController is MergeIslandController)
                 {
                     // Minion on merge island, so turning outline on vacation island and minion's base island
                     GameManager.Instance.SetActiveVacationIslandOutline(true);
-                    _selectedMinion.MainIslandController.SetActiveOutline(true);
+                    _selectedMinion.mainIslandController.SetActiveOutline(true);
                 }
-                else  if (_selectedMinion.CurrentIslandController is VacationIslandController)
+                else  if (_selectedMinion.currentIslandController is VacationIslandController)
                 {
                     // Minion on vacation island, so turning outline on merge island and minion's base island
                     GameManager.Instance.SetActiveMergeIslandOutline(true);
-                    _selectedMinion.MainIslandController.SetActiveOutline(true);
+                    _selectedMinion.mainIslandController.SetActiveOutline(true);
                 }
                 else
                 {

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4cb016dba972774c8f7287da4b5ac4a, type: 3}
+  m_Name: ForestmanStats
+  m_EditorClassIdentifier: 
+  hp: 100
+  harvestRate: 5
+  fatigueRate: 5
+  resourceTypeProduction: 0
+  cost: 20
+  iconSprite: {fileID: 6773372133307898838, guid: 53defdd32e4d3ab4883abca6d45ab351,
+    type: 3}

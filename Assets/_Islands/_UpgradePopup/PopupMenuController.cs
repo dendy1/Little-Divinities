@@ -15,6 +15,6 @@ public class PopupMenuController : MonoBehaviour
     public void Close()
     {
         gameObject.SetActive(false);
-        GameManager.Instance.PopupMenuOpened = false;
+        InterfaceManager.Instance.PopupMenuOpened = false;
     }
 }

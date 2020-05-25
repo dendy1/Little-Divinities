@@ -31,12 +31,13 @@ public class MergeIslandController : IslandController
         {
             foreach (var secondMinion in Minions)
             {
-                if (firstMinion != secondMinion && firstMinion.BaseStats.resourceTypeProduction ==
+                if (!firstMinion.Merged && !secondMinion.Merged && firstMinion != secondMinion && firstMinion.BaseStats.resourceTypeProduction ==
                     secondMinion.BaseStats.resourceTypeProduction)
                 {
-                    firstMinion.BaseStats.MergeWith(secondMinion.BaseStats);
-                    firstMinion.Refresh();
-                    firstMinion.transform.position = Spawner.RandomVector3();
+                    firstMinion.MergeWith(secondMinion.BaseStats);
+                    firstMinion.Merged = true;
+                    var transform1 = firstMinion.transform;
+                    transform1.position = (transform1.position + secondMinion.transform.position) / 2;
                     secondMinion.dead?.Invoke();
                 }
             }

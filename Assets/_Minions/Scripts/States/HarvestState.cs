@@ -1,54 +1,39 @@
 ﻿using UnityEngine;
 
-public class HarvestState : IState
+public class HarvestState : BaseState
 {
-    private MinionStats _stats;
-    private MinionBaseStats _baseStats;
-    private MinionInterface _interface;
-    private StateMachine _stateMachine;
-
-    private Delay _idleDelay = new Delay(4f);
+    private Delay _idleDelay = new Delay(1f);
     private Delay _harvestDelay = new Delay(1f);
-    
-    public HarvestState(MinionStats stats, MinionBaseStats baseStats, MinionInterface @interface, StateMachine stateMachine)
+
+    public HarvestState(MinionStats stats) : base(stats) { }
+
+    public override void Enter()
     {
-        _stats = stats;
-        _baseStats = baseStats;
-        _interface = @interface;
-        _stateMachine = stateMachine;
-    }
-    
-    public void Enter()
-    {
+        _idleDelay.WaitTime = Random.Range(0f, 5f);
+        
         _harvestDelay.Reset();
         _idleDelay.Reset();
     }
 
-    public void Execute()
+    public override void Execute()
     {
         if (_harvestDelay.IsReady)
         {
-            GameManager.Instance.Harvest(_baseStats.resourceTypeProduction, _stats.currentHarvestRate);
-            _stats.currentHp -= _stats.currentFatigueRate;
-            _interface.UpdateHealthBar();
+            GameManager.Instance.Harvest(stats.BaseStats.resourceTypeProduction, stats.currentHarvestRate);
+            stats.currentHp -= stats.currentFatigueRate;
+            stats.Interface.UpdateHealthBar();
 
             _harvestDelay.Reset();
-            if (_stats.currentHp <= 0)
+            if (stats.currentHp <= 0)
             {
-                _stateMachine.ChangeState(_stats.dieState);
+                stats.StateMachine.ChangeState(stats.dieState);
             }
         }
 
         if (_idleDelay.IsReady)
         {
-            _stateMachine.ChangeState(new IdleState(_stats, _baseStats, _interface, _stateMachine));
-            _idleDelay.WaitTime = Random.Range(5.0f, 10);
-
+            stats.StateMachine.ChangeState(stats.idleState);
             _idleDelay.Reset();
         }
-    }
-
-    public void Exit()
-    {
     }
 }

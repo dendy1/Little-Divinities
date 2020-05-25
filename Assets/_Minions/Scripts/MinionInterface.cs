@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(MinionBaseStats))]
 [RequireComponent(typeof(MinionStats))]
 public class MinionInterface : MonoBehaviour
 {
-    private MinionBaseStats _baseStats;
     private MinionStats _stats;
     
     [Header("UI Settings")]
@@ -20,7 +18,6 @@ public class MinionInterface : MonoBehaviour
     
     private void Awake()
     {
-        _baseStats = GetComponent<MinionBaseStats>();
         _stats = GetComponent<MinionStats>();
     }
 
@@ -36,11 +33,11 @@ public class MinionInterface : MonoBehaviour
 
     public void UpdateHealthBar()
     {
-        var coef = _stats.currentHp / _baseStats.hp;
+        var coef = _stats.currentHp / _stats.BaseStats.hp;
         hpBarImage.color = new Color(1 - coef, coef, coef);
         hpBarImage.fillAmount = coef;
         
-        badHpImage.gameObject.SetActive(_stats.currentHp < _baseStats.hp * 0.1);
+        badHpImage.gameObject.SetActive(_stats.currentHp < _stats.BaseStats.hp * 0.1);
     }
 
     public void SetActiveGoodHPImage(bool active)

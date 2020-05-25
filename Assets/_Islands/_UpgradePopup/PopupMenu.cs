@@ -36,13 +36,13 @@ public class PopupMenu : MonoBehaviour
             return;
         }
 
-        if (GameManager.Instance.PopupMenuOpened || CompareTag("VacationIsland") || CompareTag("MergeIsland"))
+        if (InterfaceManager.Instance.PopupMenuOpened || CompareTag("VacationIsland") || CompareTag("MergeIsland"))
         {
             return;
         }
 
         popupMenuController.gameObject.SetActive(true);
-        GameManager.Instance.PopupMenuOpened = true;
+        InterfaceManager.Instance.PopupMenuOpened = true;
         UpdateTextFields();
     }
 

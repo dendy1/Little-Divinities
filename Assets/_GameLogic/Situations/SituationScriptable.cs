@@ -17,14 +17,12 @@ public class SituationScriptable : ScriptableObject
     public int goodChoicePower;
     public int goodChoiceWater;
     
-    
     [Header("Good choice human stats")] 
     public int goodChoiceEconomy;
     public int goodChoiceFood;
     public int goodChoiceHappiness;
     public int goodChoiceHealth;
     
-
     [Header("Bad choice resources")] 
     public int badChoiceWood;
     public int badChoiceStone;

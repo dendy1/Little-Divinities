@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,6 +61,55 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
     #endregion
 
+    #region Human Stats
+
+    private int _food;
+    public int Food
+    {
+        get => _food;
+        set
+        {
+            _food = Mathf.Clamp(value, -10, 10);
+            InterfaceManager.Instance.UpdateFoodBar();
+        }
+    }
+    
+    private int _health;
+    public int Health
+    {
+        get => _health;
+        set
+        {
+            _health = Mathf.Clamp(value, -10, 10);
+            InterfaceManager.Instance.UpdateHealthBar();
+        }
+    }
+    
+    private int _economy;
+    public int Economy
+    {
+        get => _economy;
+        set
+        {
+            _economy = Mathf.Clamp(value, -10, 10);
+            InterfaceManager.Instance.UpdateEconomyBar();
+        }
+    }
+    
+    private int _happiness;
+    public int Happiness
+    {
+        get => _happiness;
+        set
+        {
+            _happiness = Mathf.Clamp(value, -10, 10);
+            InterfaceManager.Instance.UpdateHappinessBar();
+        }
+    }
+
+    #endregion
+    
+    
     [Header("Resource Island Controllers")]
     public List<IslandController> islandControllers;
 
@@ -70,17 +120,13 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     [Header("FX Components")]
     public GameObject deathParticles;
     
-    public bool PopupMenuOpened { get; set; }
-
     private void Start()
     {
         SetActiveIslandsOutline(false);
 
         CrystalCount = 500;
-        WoodCount = 100;
-        StoneCount = 100;
-        WaterCount = 100;
-        CrystalCount = 100;
+        WoodCount = StoneCount = WaterCount = PowerCount = 1000;
+        Economy = Food = Health = Happiness = 7;
     }
 
     public void SetActiveIslandsOutline(bool active)

@@ -231,6 +231,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -406,6 +407,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -573,6 +575,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -917,6 +920,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1001,7 +1005,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8414651836226297637}
   - component: {fileID: 1895129797392069215}
-  - component: {fileID: 2392266174027721129}
   - component: {fileID: 8442407809663318736}
   - component: {fileID: 1022719851188421650}
   - component: {fileID: 246163026564801875}
@@ -1048,24 +1051,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2392266174027721129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4800134184432414006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4cb016dba972774c8f7287da4b5ac4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 200
-  harvestRate: 5
-  fatigueRate: 5
-  resourceTypeProduction: 4
-  cost: 20
-  iconSprite: {fileID: 21300000, guid: 01cb9daeb1dc4b64f9c02f6fb23b4e74, type: 3}
 --- !u!114 &8442407809663318736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1078,11 +1063,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3687f842d6f76994d88126b45fe8d396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStats: {fileID: 11400000, guid: c16e45bcadd9b7d4db3ed04b53fc9a41, type: 2}
   currentHp: 0
   currentHarvestRate: 0
   currentFatigueRate: 0
-  MainIslandController: {fileID: 0}
-  CurrentIslandController: {fileID: 0}
+  mainIslandController: {fileID: 0}
+  currentIslandController: {fileID: 0}
   dead:
     m_PersistentCalls:
       m_Calls: []
@@ -1354,6 +1340,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.24979922, g: 0.6981132, b: 0, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1508,6 +1495,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1879,6 +1867,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1946,6 +1935,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

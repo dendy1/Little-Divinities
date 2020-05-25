@@ -1,48 +1,37 @@
-﻿public class VacationState : IState
+﻿public class VacationState : BaseState
 {
-    private MinionStats _stats;
-    private MinionBaseStats _baseStats;
-    private MinionInterface _interface;
-    private StateMachine _stateMachine;
-
     private Delay _healDelay = new Delay(3f);
     
-    public VacationState(MinionStats stats, MinionBaseStats baseStats, MinionInterface @interface, StateMachine stateMachine)
-    {
-        _stats = stats;
-        _baseStats = baseStats;
-        _interface = @interface;
-        _stateMachine = stateMachine;
-    }
+    public VacationState(MinionStats stats) : base(stats) {}
     
-    public void Enter()
+    public override void Enter()
     {
-        _stats.StopAllCoroutines();
+        stats.StopAllCoroutines();
         _healDelay.Reset();
     }
 
-    public void Execute()
+    public override void Execute()
     {
         if (_healDelay.IsReady)
         {
-            if (_stats.currentHp + _stats.currentFatigueRate > _baseStats.hp)
+            if (stats.currentHp + stats.currentFatigueRate > stats.BaseStats.hp)
             {
-                _stats.currentHp = _baseStats.hp;
+                stats.currentHp = stats.BaseStats.hp;
             }
             else
             {
-                _stats.currentHp += _stats.currentFatigueRate;
+                stats.currentHp += stats.currentFatigueRate;
             }
 
-            _interface.UpdateHealthBar();
-            _interface.SetActiveGoodHPImage(true);
+            stats.Interface.UpdateHealthBar();
+            stats.Interface.SetActiveGoodHPImage(true);
             
             _healDelay.Reset();
         }
     }
 
-    public void Exit()
+    public override void Exit()
     {
-        _interface.SetActiveGoodHPImage(false);
+        stats.Interface.SetActiveGoodHPImage(false);
     }
 }

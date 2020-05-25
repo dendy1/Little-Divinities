@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(MinionBaseStats))]
 [RequireComponent(typeof(MinionInterface))]
 public class MinionStats : MonoBehaviour
 {
-    private StateMachine _stateMachine;
-    private MinionBaseStats _baseStats;
+    [SerializeField] private MinionBaseStats baseStats;
 
     public IdleState idleState;
     public HarvestState harvestState;
@@ -18,29 +16,34 @@ public class MinionStats : MonoBehaviour
     public float currentHarvestRate;
     public float currentFatigueRate;
 
-    public StateMachine StateMachine => _stateMachine;
-    public MinionBaseStats BaseStats => _baseStats;
+    private StateMachine _stateMachine;
+    private MinionInterface _interface;
     
-    public IslandController MainIslandController;
-    public IslandController CurrentIslandController;
+    public StateMachine StateMachine => _stateMachine;
+    public MinionBaseStats BaseStats => baseStats;
+    public MinionInterface Interface => _interface;
+    
+    public IslandController mainIslandController;
+    public IslandController currentIslandController;
 
     public UnityEvent dead = new UnityEvent();
+
+    public bool Merged = false;
     
     private void Awake()
     {
         _stateMachine = new StateMachine();
-        _baseStats = GetComponent<MinionBaseStats>();
-        var @interface = GetComponent<MinionInterface>();
+        _interface = GetComponent<MinionInterface>();
         
-        currentHp = _baseStats.hp;
-        currentHarvestRate = _baseStats.harvestRate;
-        currentFatigueRate = _baseStats.fatigueRate;
+        currentHp = baseStats.hp;
+        currentHarvestRate = baseStats.harvestRate;
+        currentFatigueRate = baseStats.fatigueRate;
         
-        idleState = new IdleState(this, _baseStats, @interface, _stateMachine);
-        harvestState = new HarvestState(this, _baseStats, @interface, _stateMachine);
-        vacationState = new VacationState(this, _baseStats, @interface, _stateMachine);
-        dieState = new DieState(this, _baseStats, @interface, _stateMachine);
-        mergeState = new MergeState(this, _baseStats, @interface, _stateMachine);
+        idleState = new IdleState(this);
+        harvestState = new HarvestState(this);
+        vacationState = new VacationState(this);
+        dieState = new DieState(this);
+        mergeState = new MergeState(this);
     }
 
     private void Start()
@@ -56,23 +59,26 @@ public class MinionStats : MonoBehaviour
 
     public void OnDead()
     {
-        // GameObject particles = Instantiate(GameManager.Instance.deathParticles, transform.position, transform.rotation);
-        // Destroy(particles, 2);
-        // dead?.Invoke();
-        // StopAllCoroutines();
         Destroy(gameObject);
     }
 
     public void RemoveFromIsland()
     {
-        CurrentIslandController.RemoveMinion(this);
+        currentIslandController.RemoveMinion(this);
     }
 
     public void Refresh()
     {
-        currentHp = _baseStats.hp;
-        currentFatigueRate = _baseStats.fatigueRate;
-        currentHarvestRate = _baseStats.harvestRate;
+        currentHp = baseStats.hp;
+        currentFatigueRate = baseStats.fatigueRate;
+        currentHarvestRate = baseStats.harvestRate;
+    }
+
+    public void MergeWith(MinionBaseStats other)
+    {
+        currentHp = (baseStats.hp + other.hp) * 0.5f * 3f;
+        currentHarvestRate = (baseStats.harvestRate + other.harvestRate) * 0.5f * 2.5f;
+        currentFatigueRate = (baseStats.fatigueRate + other.fatigueRate) * 0.5f * 1.5f;
     }
 
     public bool IsWorking => _stateMachine.CurrentState == harvestState;

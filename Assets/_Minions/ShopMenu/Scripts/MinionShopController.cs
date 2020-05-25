@@ -19,7 +19,7 @@ public class MinionShopController : MonoBehaviour, IPointerClickHandler, IPointe
 
     private void Start()
     {
-        var minionStats = islandController.Spawner.minionPrefab.GetComponent<MinionBaseStats>();
+        var minionStats = islandController.Spawner.minionPrefab.GetComponent<MinionStats>().BaseStats;
 
         _shopButtonController.priceText.text = minionStats.cost.ToString();
         _shopButtonController.iconImage.sprite = minionStats.iconSprite;
