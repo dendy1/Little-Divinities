@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Day 1
   m_EditorClassIdentifier: 
   minutes: 0
-  seconds: 30
+  seconds: 3
   desiredWood: 100
   desiredStone: 100
   desiredPower: 100

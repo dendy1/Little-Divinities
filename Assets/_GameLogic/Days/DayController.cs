@@ -64,8 +64,9 @@ public class DayController : MonoBehaviour
     {
         if (_dayDelay.IsReady)
         {
-            DayEnded();
             _dayDelay.Stop();
+            StopAllCoroutines();
+            DayEnded();
         }
     }
 
@@ -157,9 +158,8 @@ public class DayController : MonoBehaviour
         else
         {
             _dayDelay.Stop();
-            StopCoroutine(UpdateTimerTextCoroutine());
-            timeText.text = "";
             dayText.text = "Free game";
+            timeText.text = "";
         }
     }
 }
